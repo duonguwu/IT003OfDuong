@@ -1,3 +1,7 @@
+// STT: 42
+// Họ và tên: Nguyễn Dương
+// Buổi 03 - Bài 3
+
 #include <iostream>
 using namespace std;
 
@@ -45,11 +49,12 @@ void Push(Stack &s, int x)
         s.Top = p;
     }
 }
-void Pop(Stack &s, int &value)
+
+bool Pop(Stack &s, int &value)
 {
     if (s.Top == NULL)
     {
-        return;
+        return false;
     }
     else
     {
@@ -58,6 +63,7 @@ void Pop(Stack &s, int &value)
         s.Top = s.Top->next;
         delete p;
         p = NULL;
+        return true;
     }
 }
 
@@ -81,24 +87,38 @@ void Print(Stack s){
     }
 }
 
+bool Swap(Stack &a, Stack &b){
+    if(a.Top == NULL){
+        return false;
+    }
+    else{
+        int value;
+        Pop(a, value);
+        Push(b, value);
+        return true;
+    }
+}
+
+// 6 1 4 6 2 3 6
 int main(){
     Stack a, b, c;
     CreateEmptyStack(a);
     CreateEmptyStack(b);
     CreateEmptyStack(c);
     int x;
-    Push(a, 1);
-    Push(a, 2);
-    Push(a, 3);
+
     do{
         cout << "\n============MENU===========\n";
+        cout << "\n0. Creating Tower.";
         cout << "\n1. A -> B";
         cout << "\n2. B -> A";
         cout << "\n3. B -> C";
         cout << "\n4. C -> B";
         cout << "\n5. C -> A";
         cout << "\n6. A -> C";
+        cout << "\n7. 6 1 4 6 2 3 6";
         cout << "\n============END============\n";
+        
         cout << "\nStack A: ";
         Print(a);
         cout << "\nStack B: ";
@@ -106,5 +126,42 @@ int main(){
         cout << "\nStack C: ";
         Print(c);
         cout << "\n===========================\n";
-    } while (x != 0);
+
+        cout << "Nhap vao lua chon: ";
+        cin >> x;
+
+        switch (x)
+        {
+        case 0:
+            int n;
+            cout << "Nhap vao so tang cua thap: ";
+            cin >> n;
+            for (int i = n; i > 0; i--){
+                Push(a, i);
+            }
+            break;
+        case 1:
+            Swap(a,b);
+            break;
+    
+        case 2:
+            Swap(b,a);
+            break;
+        case 3:
+            Swap(b,c);
+            break;
+        case 4:
+            Swap(c,b);
+            break;
+        case 5:
+            Swap(c,a);
+            break;
+        case 6:
+            Swap(a,c);
+            break;
+        }
+    
+    } while (x != 99);
+    
 }
+    
