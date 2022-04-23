@@ -1,3 +1,7 @@
+// STT: 42
+// Họ và tên: Nguyễn Dương
+// Buổi 03 - Bài 1
+
 #include <iostream>
 using namespace std;
 
@@ -9,8 +13,7 @@ struct Node
 
 struct Stack
 {
-    Node* head;
-    Node* tail;
+    Node *Top;
 };
 
 Node *CreateNode(int x){
@@ -23,12 +26,11 @@ Node *CreateNode(int x){
 }
 
 void CreateEmptyStack(Stack &s){
-    s.head = NULL;
-    s.tail = NULL;
+    s.Top = NULL;
 }
 
 bool IsEmpty(Stack s){
-    if(s.head == NULL)
+    if(s.Top == NULL)
         return true;
     return false;
 }
@@ -38,30 +40,31 @@ void Push(Stack &s){
     cout << "Nhap x = ";
     cin >> x;
     Node *p = CreateNode(x);
-    if(s.head == NULL){
-        s.head = s.tail = p;
+    if (s.Top == nullptr)
+    {
+        s.Top = p;
     }
-    else{
-        s.tail ->next = p;
-        s.tail = p;
+    else
+    {
+        p->next = s.Top;
+        s.Top = p;
     }
 }
 
-void Pop(Stack &s){
-    if(IsEmpty(s)){
-        cout << "Danh sach rong.";
+bool Pop(Stack &s, int &value)
+{
+    if (s.Top == NULL)
+    {
+        return false;
     }
-    else{
-        Node *p = s.head;
-        for(p; p != NULL; p = p ->next){
-            Node *pre;
-            Node *last = s.tail;
-            if(pre->next = last){
-                s.tail = pre;
-                delete last;
-                break;
-            }
-        }
+    else
+    {
+        Node *p = s.Top;
+        value = p->data;
+        s.Top = s.Top->next;
+        delete p;
+        p = NULL;
+        return true;
     }
 }
 
@@ -70,11 +73,11 @@ void PrintTop(Stack s){
         cout << "Danh sach rong.";  
     }
     else   
-        cout << s.tail->data << endl;
+        cout << s.Top->data << endl;
 }
 
 void Print(Stack s){
-    for (Node *p = s.head; p != NULL; p = p->next){
+    for (Node *p = s.Top; p != NULL; p = p->next){
         cout << p->data << " ";
     }
     cout << endl;
@@ -93,7 +96,7 @@ int main(){
     cout << "\n6. Xuat ra phan tu Top cua stack.";
     cout << "\n============END============\n";
     Print(s);
-    cout << "\n===========================\n";
+    
     
         cout << "\nNhap lua chon: ";
         cin >> x;
@@ -114,13 +117,17 @@ int main(){
             Push(s);
             break;
         case 5:
-            Pop(s);
+            int value;
+            Pop(s, value);
+            cout << "Phan tu duoc lay ra la: " << value << endl;
             break;
         case 6: 
+            cout << "Phan tu Top cua Stack la: ";
             PrintTop(s);
             break;
         }
     }  while (x != 0);
+    cout << "\n===========================\n";
 }
 
 
