@@ -1,3 +1,8 @@
+// STT: 42
+// Họ và tên: Nguyễn Dương
+// Buổi 03 - Bài 2
+
+
 #include <iostream>
 using namespace std;
 
@@ -9,13 +14,13 @@ struct Node
 };
 
 struct Queue{
-    Node *head;
-    Node *tail;
+    Node *front;
+    Node *rear;
 };
 
 void CreateEmptyQueue(Queue &q){
-    q.head = NULL;
-    q.tail = NULL;
+    q.front = NULL;
+    q.rear = NULL;
 }
 
 Node *CreateNode(int x){
@@ -27,55 +32,8 @@ Node *CreateNode(int x){
     return p;
 }
 
-void PrintQueue(Queue q){
-    Node *p;
-    if (q.head == NULL){
-        cout << "Rong.";
-    }
-    else{
-        p = q.head;
-        while(p){
-            cout << p->info << " ";
-            p = p -> next;
-        }
-    }
-}
-
-void AddHead(Queue &q, Node *p){
-    if(q.head == NULL){
-        q.head = p;
-        q.tail = q.head;
-    }
-    else{
-        p->next = q.head;
-        q.head = p;
-    }
-}
-
-void AddTail(Queue &q, Node *p){
-    if(q.head = NULL){
-        q.head = p;
-        q.tail = q.head;
-    }
-    else{
-        q.tail->next = p;
-        q.tail = p;
-    }
-}
-
-void CreateQueue(Queue &q, int n)
-{
-    int i = 1;
-    while (i <= n){
-        int x;
-        cin >> x;
-        AddHead(q, CreateNode(x));
-        i++;
-    }
-}
-
 bool IsEmpty(Queue q){
-    if(q.head == NULL)
+    if(q.front == NULL)
         return true;
     return false;
 }
@@ -85,27 +43,45 @@ void PrintFront(Queue q){
         cout << "Danh sach rong.";  
     }
     else{
-        cout << "Rear: " << q.head->info << endl;
-        cout << "Front: " << q.tail->info << endl;
+        cout << "Rear: " << q.front->info << endl;
+        cout << "Front: " << q.rear->info << endl;
     }
 }
 
-void EnQueue(Queue &q){
-    int x;
-    cout << "Nhap Node muon chen vao: ";
-    cin >> x;
+void EnQueue(Queue &q, int x){
+    
     Node *p = CreateNode(x);
-    if(q.head = NULL){
-        q.head = p;
-        q.tail = q.head;
+    if(IsEmpty(q)){
+        q.front = p;
+        q.rear = q.front;
     }
     else{
-        q.tail->next = p;
-        q.tail = p;
+        q.rear->next = p;
+        q.rear = p;
     }
 }
 
+bool DeQueue(Queue &q, int x){
+    if(IsEmpty(q))
+        return false;
+    x = q.front->info;
+    q.front = q.front->next;
+    if(q.front == NULL)
+        q.rear == NULL;
+    return true;
+}
 
+void PrintQueue(Queue q){
+    Node *p;
+    if (q.front == NULL){
+        cout << "Rong.";
+    }
+    else{
+        p = q.front;
+        for (p; p != NULL; p = p -> next)
+            cout << p->info << " ";
+    }
+}
 
 int main(){
     Queue q;
@@ -140,10 +116,16 @@ int main(){
         case 3:
 
         case 4:
-            EnQueue(q);
+            int k;
+            cout << "Nhap Node muon chen vao: ";
+            cin >> k;
+            EnQueue(q,k);
             break;
         case 5:
-            
+            if(DeQueue(q,x))
+                cout << "Phan tu lay duoc la: " << x << endl;
+            else 
+                cout <<"Stack rong." << endl;
             break;
         case 6: 
             PrintFront(q);
